@@ -22,11 +22,11 @@ jobs:
 
       - name: Deploy to VPS
         run: |
-          ssh abdelhady@144.91.79.174"
+          ssh abdelhady@144.91.79.174
             cd WorkEnrich-Backend-Django &&
             git pull origin main &&
             pip3 install -r requirements.txt &&
             python3 manage.py makemigrations &&
             python3 manage.py migrate &&
             python3 manage.py runserver
-          "
+            exit
