@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - staging
+      - develop
 
 jobs:
   deploy:
@@ -20,10 +22,11 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 144.91.79.174 >> ~/.ssh/known_hosts
 
-      - name: Deploy to VPS
+      - name: Deploy to Production
+        if: github.ref == 'refs/heads/main'
         run: |
           ssh -tt root@144.91.79.174 << 'EOF'
-            cd /root/WorkEnrich-Backend-Django
+            cd /root/WorkEnrich-Backend-Django-Production
             git pull origin main
             python3 -m venv env
             source env/bin/activate
@@ -32,3 +35,34 @@ jobs:
             python3 manage.py makemigrations
             python3 manage.py migrate
             exit
+          EOF
+
+      - name: Deploy to Staging
+        if: github.ref == 'refs/heads/staging'
+        run: |
+          ssh -tt root@144.91.79.174 << 'EOF'
+            cd /root/WorkEnrich-Backend-Django-Staging
+            git pull origin staging
+            python3 -m venv env
+            source env/bin/activate
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            python3 manage.py makemigrations
+            python3 manage.py migrate
+            exit
+          EOF
+
+      - name: Deploy to Development
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          ssh -tt root@144.91.79.174 << 'EOF'
+            cd /root/WorkEnrich-Backend-Django-Develop
+            git pull origin develop
+            python3 -m venv env
+            source env/bin/activate
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            python3 manage.py makemigrations
+            python3 manage.py migrate
+            exit
+          EOF
