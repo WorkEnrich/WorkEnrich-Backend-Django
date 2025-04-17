@@ -22,7 +22,7 @@ jobs:
 
       - name: Deploy to VPS
         run: |
-          ssh root@144.91.79.174
+          ssh -tt root@144.91.79.174
             cd /root/WorkEnrich-Backend-Django &&
             git pull origin main &&
             pip3 install -r requirements.txt &&
