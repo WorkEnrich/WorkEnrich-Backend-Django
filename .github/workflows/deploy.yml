@@ -22,11 +22,11 @@ jobs:
 
       - name: Deploy to VPS
         run: |
-          ssh -tt root@144.91.79.174
-            cd /root/WorkEnrich-Backend-Django &&
-            git pull origin main &&
-            pip3 install -r requirements.txt &&
-            python3 manage.py makemigrations &&
-            python3 manage.py migrate &&
+          ssh -tt root@144.91.79.174 << 'EOF'
+            cd /root/WorkEnrich-Backend-Django
+            git pull origin main
+            pip3 install -r requirements.txt
+            python3 manage.py makemigrations
+            python3 manage.py migrate
             python3 manage.py runserver
             exit
